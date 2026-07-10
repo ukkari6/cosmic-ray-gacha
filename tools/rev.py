@@ -41,6 +41,11 @@ def check_cosmic_ray_gacha(port, baudrate):
         ser.close()
         return
     
+    # RP2040側にACKを送信して、データ送出を許可する
+    ser.write(b'\x06')
+    ser.flush() # 確実にバッファから送り出す
+    print(f"[*] RP2040側にデータ送出を許可を送信...")
+    
     gacha_pool_size = int.from_bytes(size_bytes, byteorder='big')
     print(f"[+] 転送サイズ: {gacha_pool_size} バイト")
     print(f"[*] 総監視ビット数: {gacha_pool_size * 8:,} ビットの検証を開始します...")
